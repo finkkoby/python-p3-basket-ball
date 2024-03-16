@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
 
 from basket_ball import (
-    num_points_per_game, player_age,
-    team_colors, team_names,
-    player_numbers, player_stats,
-    average_rebounds_by_shoe_brand
+    num_points_per_game, 
+    player_age,
+    team_colors, 
+    team_names,
+    player_numbers, 
+    player_stats,
+    average_rebounds_by_shoe_brand, 
+    get_all_players,
+    get_all_stats,
+    get_teams,
+    get_average
 )
 
 if __name__ == '__main__':

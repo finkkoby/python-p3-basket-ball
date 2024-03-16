@@ -182,3 +182,59 @@ def game_dict():
             ]
         }
     }
+def get_all_players(team="all"):
+    names = []
+    if team == "home": 
+        names += [player for player in game_dict()["home"]["players"]]
+    elif team == "away":
+        names += [player for player in game_dict()["away"]["players"]]
+    elif team == "all":
+        names += [player for player in game_dict()["home"]["players"]]
+        names += [player for player in game_dict()["away"]["players"]]
+    return names
+def get_all_stats(stat, team="all"):
+    names = [(player["name"], player[stat]) for player in get_all_players(team)]
+    return names
+def get_teams():
+    return [game_dict()["home"], game_dict()["away"]]
+def num_points_per_game(name):
+    points_list = get_all_stats("points_per_game")
+    for player in points_list:
+        if player[0] == name:
+            return player[1]
+def player_age(name):
+    age_list = get_all_stats("age")
+    for player in age_list:
+        if player[0] == name:
+            return player[1]
+def team_colors(team_name):
+    for team in get_teams():
+        if team["team_name"] == team_name:
+            return team["colors"]
+def team_names():
+    return [team["team_name"] for team in get_teams()]
+def player_numbers(team_name):
+    home, away = get_teams()
+    if home["team_name"] == team_name:
+        return [player[1] for player in get_all_stats("number", "home")]
+    elif away["team_name"] == team_name:
+        return [player[1] for player in get_all_stats("number", "away")]
+def player_stats(name):
+    for player in get_all_players():
+        if player["name"] == name:
+            return player
+def average_rebounds_by_shoe_brand():
+    brands = dict()
+    for player in get_all_players():
+        if brands.get(player["shoe_brand"]) is None:
+            brands[player["shoe_brand"]] = []
+        brands.get(player["shoe_brand"]).append(player["rebounds_per_game"])
+    with_averages = [[brand, get_average(list)] for brand, list in brands.items()]
+    averages_to_strings = [f"{brand[0]}:  {brand[1]:.2f}"for brand in with_averages]
+    print("\n".join(averages_to_strings))
+
+def get_average(list):
+    total = 0
+    for num in list:
+        total += num
+    return total / len(list)
